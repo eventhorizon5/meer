@@ -199,6 +199,10 @@ int main (int argc, char *argv[])
     Meer_Log(NORMAL, "Decode 'smtp'    : %s", MeerConfig->smtp ? "enabled" : "disabled" );
     Meer_Log(NORMAL, "Decode 'email'   : %s", MeerConfig->email ? "enabled" : "disabled" );
     Meer_Log(NORMAL, "");
+    Meer_Log(NORMAL, "Append_Interface : %s", MeerConfig->append_interface ? "enabled" : "disabled" );
+    Meer_Log(NORMAL, "Hostname         : %s", MeerConfig->hostname );
+    Meer_Log(NORMAL, "Interface        : %s", MeerConfig->interface );
+    Meer_Log(NORMAL, "");
 
     Init_Waldo();
 

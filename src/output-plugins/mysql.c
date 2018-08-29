@@ -96,10 +96,18 @@ uint32_t MySQL_Get_Sensor_ID( void )
     /* For some reason Barnyar2 liked the hostname to be "hostname:interface".  We're simply mirroring
        that functionality here */
 
-    snprintf(tmp, sizeof(tmp),
+    if ( MeerConfig->append_interface == true )
+        {
+    	     snprintf(tmp, sizeof(tmp),
              "SELECT sid FROM sensor WHERE hostname='%s:%s' AND interface='%s' AND detail=1 AND encoding='0'",
              MeerConfig->hostname, MeerConfig->interface, MeerConfig->interface);
-
+        }
+    else
+        {
+             snprintf(tmp, sizeof(tmp),
+             "SELECT sid FROM sensor WHERE hostname='%s' AND interface='%s' AND detail=1 AND encoding='0'",
+             MeerConfig->hostname, MeerConfig->interface);
+        }
     results=MySQL_DB_Query(tmp);
     MeerCounters->SELECTCount++;
 
@@ -113,9 +121,18 @@ uint32_t MySQL_Get_Sensor_ID( void )
             return( sensor_id );
         }
 
-    snprintf(tmp, sizeof(tmp),
-             "INSERT INTO sensor (hostname, interface, filter, detail, encoding, last_cid) VALUES ('%s:%s', '%s', NULL, '1', '0', '0')",
-             MeerConfig->hostname, MeerConfig->interface, MeerConfig->interface);
+    if ( MeerConfig->append_interface == true )
+	{
+	    snprintf(tmp, sizeof(tmp),
+       	      "INSERT INTO sensor (hostname, interface, filter, detail, encoding, last_cid) VALUES ('%s:%s', '%s', NULL, '1', '0', '0')",
+       	     MeerConfig->hostname, MeerConfig->interface, MeerConfig->interface);
+	}
+    else
+	{
+            snprintf(tmp, sizeof(tmp),
+              "INSERT INTO sensor (hostname, interface, filter, detail, encoding, last_cid) VALUES ('%s', '%s', NULL, '1', '0', '0')",
+             MeerConfig->hostname, MeerConfig->interface);
+        }
 
     MySQL_DB_Query(tmp);
     MeerCounters->INSERTCount++;
@@ -195,10 +212,18 @@ void MySQL_Record_Last_CID ( void )
 {
 
     char tmp[MAX_MYSQL_QUERY];
-
-    snprintf(tmp, sizeof(tmp),
+    if ( MeerConfig->append_interface == true )
+        {
+    	snprintf(tmp, sizeof(tmp),
              "UPDATE sensor SET last_cid='%" PRIu64 "' WHERE sid=%d AND hostname='%s:%s' AND interface='%s' AND detail=1",
              MeerOutput->mysql_last_cid, MeerOutput->mysql_sensor_id, MeerConfig->hostname, MeerConfig->interface, MeerConfig->interface);
+	}
+    else 
+	{
+        snprintf(tmp, sizeof(tmp),
+             "UPDATE sensor SET last_cid='%" PRIu64 "' WHERE sid=%d AND hostname='%s' AND interface='%s' AND detail=1",
+             MeerOutput->mysql_last_cid, MeerOutput->mysql_sensor_id, MeerConfig->hostname, MeerConfig->interface);
+        }
 
     (void)MySQL_DB_Query(tmp);
     MeerCounters->UPDATECount++;

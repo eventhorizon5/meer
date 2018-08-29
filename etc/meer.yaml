@@ -30,6 +30,9 @@ meer-core:
 
     meer_log: "/var/log/meer/meer.log"   # Meer log file
 
+    #set to "enabled" to append interface name onto hostname, for the mysql plugin
+    append_interface: enabled
+
     # Meer can decode various types of data from within an "alert".  This 
     # section enabled/disabled various JSON decoders.  
 

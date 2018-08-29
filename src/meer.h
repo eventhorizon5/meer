@@ -51,6 +51,8 @@ struct _MeerConfig
     char hostname[64];
     char runas[32];
 
+    bool append_interface;
+
     bool daemonize;
     bool quiet;
 

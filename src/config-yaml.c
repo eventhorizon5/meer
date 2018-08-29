@@ -305,6 +305,16 @@ void Load_YAML_Config( char *yaml_file )
 
                                 }
 
+			    else if ( !strcmp(last_pass, "append_interface" ) )
+                                {
+
+                                    if ( !strcasecmp(value, "yes") || !strcasecmp(value, "true" ) || !strcasecmp(value, "enabled"))
+                                        {
+                                            MeerConfig->append_interface = true;
+                                        }
+
+                                }
+
                             else if ( !strcmp(last_pass, "smtp" ) )
                                 {
 
@@ -607,10 +617,10 @@ void Load_YAML_Config( char *yaml_file )
 
     /* Sanity check on core configurations */
 
-    if ( MeerConfig->interface[0] == '\0' )
+    /*if ( MeerConfig->interface[0] == '\0' )
         {
             Meer_Log(ERROR, "Configuration incomplete.  No 'interface' specified!");
-        }
+        }*/
 
     if ( MeerConfig->hostname[0] == '\0' )
         {
